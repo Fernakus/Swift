@@ -131,44 +131,42 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tQT-9b-gZm">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tQT-9b-gZm">
                                 <rect key="frame" x="25" y="175" width="364" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wIt-15-gkU">
-                                <rect key="frame" x="25" y="243" width="364" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QrS-ks-Ab1">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QrS-ks-Ab1">
                                 <rect key="frame" x="25" y="104" width="364" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EfI-Az-P10">
+                                <rect key="frame" x="25" y="253" width="364" height="609"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="f4T-Ze-IpY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="f4T-Ze-IpY" firstAttribute="trailing" secondItem="EfI-Az-P10" secondAttribute="trailing" constant="25" id="3j1-eh-6Pa"/>
                             <constraint firstItem="QrS-ks-Ab1" firstAttribute="top" secondItem="f4T-Ze-IpY" secondAttribute="top" constant="60" id="43V-gV-EfK"/>
+                            <constraint firstItem="f4T-Ze-IpY" firstAttribute="bottom" secondItem="EfI-Az-P10" secondAttribute="bottom" id="PNi-Ch-1Wq"/>
                             <constraint firstItem="f4T-Ze-IpY" firstAttribute="trailing" secondItem="tQT-9b-gZm" secondAttribute="trailing" constant="25" id="Pqk-8J-vcJ"/>
                             <constraint firstItem="QrS-ks-Ab1" firstAttribute="leading" secondItem="f4T-Ze-IpY" secondAttribute="leading" constant="25" id="S9L-MD-yHQ"/>
+                            <constraint firstItem="EfI-Az-P10" firstAttribute="top" secondItem="tQT-9b-gZm" secondAttribute="bottom" constant="57.5" id="WY9-eq-L6a"/>
                             <constraint firstItem="tQT-9b-gZm" firstAttribute="leading" secondItem="f4T-Ze-IpY" secondAttribute="leading" constant="25" id="YZW-29-PC8"/>
                             <constraint firstItem="tQT-9b-gZm" firstAttribute="top" secondItem="QrS-ks-Ab1" secondAttribute="bottom" constant="50.5" id="a1v-sK-0BD"/>
                             <constraint firstItem="tQT-9b-gZm" firstAttribute="top" secondItem="QrS-ks-Ab1" secondAttribute="bottom" constant="50.5" id="dfF-39-Lun"/>
-                            <constraint firstItem="wIt-15-gkU" firstAttribute="top" secondItem="tQT-9b-gZm" secondAttribute="bottom" constant="47.5" id="iFY-ZL-apd"/>
-                            <constraint firstItem="wIt-15-gkU" firstAttribute="leading" secondItem="f4T-Ze-IpY" secondAttribute="leading" constant="25" id="ivs-VC-vju"/>
+                            <constraint firstItem="EfI-Az-P10" firstAttribute="leading" secondItem="f4T-Ze-IpY" secondAttribute="leading" constant="25" id="heB-wQ-ajd"/>
                             <constraint firstItem="f4T-Ze-IpY" firstAttribute="trailing" secondItem="QrS-ks-Ab1" secondAttribute="trailing" constant="25" id="mjw-uh-HqZ"/>
-                            <constraint firstItem="f4T-Ze-IpY" firstAttribute="trailing" secondItem="wIt-15-gkU" secondAttribute="trailing" constant="25" id="sB2-Ju-KeZ"/>
-                            <constraint firstItem="wIt-15-gkU" firstAttribute="top" secondItem="tQT-9b-gZm" secondAttribute="bottom" constant="47.5" id="sQ5-S7-1eK"/>
-                            <constraint firstItem="f4T-Ze-IpY" firstAttribute="bottom" secondItem="wIt-15-gkU" secondAttribute="bottom" id="whV-zS-L51"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="reminderBody" destination="wIt-15-gkU" id="JCo-ib-z7V"/>
+                        <outlet property="reminderBody" destination="EfI-Az-P10" id="DiY-ur-GyJ"/>
                         <outlet property="reminderDate" destination="tQT-9b-gZm" id="Qtd-MN-Z0i"/>
                         <outlet property="reminderTitle" destination="QrS-ks-Ab1" id="y8b-fm-qQj"/>
                     </connections>

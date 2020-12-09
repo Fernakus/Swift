@@ -16,40 +16,39 @@ import RealmSwift
  */
 class ReminderInfoVC: UIViewController, UITextFieldDelegate {
     // Outlets
-    @IBOutlet var reminderTitle: UILabel!
-    @IBOutlet var reminderBody: UILabel!
-    @IBOutlet var reminderDate: UILabel!
+    @IBOutlet weak var reminderTitle: UILabel!
+    @IBOutlet weak var reminderBody: UITextField!
+    @IBOutlet weak var reminderDate: UILabel!
     
     // Variables
-    private var reminderObj: Reminder?
-    private let realm = try! Realm()
-    public var completeionHandler: ((String, String, Date) -> Void)?
-    public var deletionHandler: (() -> Void)?
-    
+    public var realmReminderObj: RealmReminderObj?
+    public var realm: Realm?
+    public var reminderInfoCompletionHandler: ((RealmReminderObj) -> Void)?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Add Delete Button
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Delete", style: .done, target: self, action: #selector(deleteButton))
+        // Create Object
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM. d yyyy @ h:mm a"
         
-        reminderTitle.text = "Reminder Title"
-        reminderDate.text = "Reminder Date"
-        reminderBody.text = "Reminder Body"
+        // Set Labels
+        reminderTitle?.text = "\(realmReminderObj!.structure!.title)"
+        reminderBody?.text = "\(realmReminderObj!.structure!.body)"
+        reminderDate?.text = "\(realmReminderObj!.structure!.date)"
+        
+        // Add Delete Content
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Delete", style: .done, target: self, action: #selector(deleteButton))
     }
     
     // Delete Reminders From Realm
     @objc private func deleteButton() {
-        // Unwrap
-        guard let reminderObj = self.reminderObj else {
-            return
-        }
-
-        // Delete From Realm
-        realm.beginWrite()
-        realm.delete(reminderObj)
-        try! realm.commitWrite()
-        deletionHandler?()
+        // Go back to root controller
+        realm!.beginWrite()
+        realm!.delete(realmReminderObj!)
+        try! realm!.commitWrite()
         
+        reminderInfoCompletionHandler?(realmReminderObj!)
         navigationController?.popToRootViewController(animated: true)
     }
 }

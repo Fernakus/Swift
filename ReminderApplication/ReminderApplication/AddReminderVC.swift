@@ -26,6 +26,8 @@ class AddReminderVC: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Assign
+        titleTextField.becomeFirstResponder()
         titleTextField.delegate = self
         bodyTextField.delegate = self
         

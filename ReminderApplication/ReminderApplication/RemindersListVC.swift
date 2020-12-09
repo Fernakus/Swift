@@ -1,4 +1,4 @@
- //
+//
 //  RemindersListVC.swift
 //  ReminderApplication
 //
@@ -15,7 +15,7 @@ import UserNotifications
 /*
  * Structures
  */
-struct ReminderStruct {
+struct ReminderStruct : Codable {
      let title: String
      let body: String
      let date: Date
@@ -25,11 +25,20 @@ struct ReminderStruct {
 /*
  * Classes
  */
-class Reminder: Object {
-    @objc dynamic var reminderTitle: String = ""
-    @objc dynamic var reminderBody: String = ""
-    @objc dynamic var reminderID: String = ""
-    @objc dynamic var reminderDate: Date = Date()
+class RealmReminderObj: Object {
+    @objc private dynamic var structData: Data? = nil
+
+    var structure : ReminderStruct? {
+        get {
+            if let data = structData {
+                return try? JSONDecoder().decode(ReminderStruct.self, from: data)
+            }
+            return nil
+        }
+        set {
+            structData = try? JSONEncoder().encode(newValue)
+        }
+    }
 }
 
 class RemindersListVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -37,9 +46,10 @@ class RemindersListVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     @IBOutlet var table: UITableView!
     
     // Variables
-    private var remindersList = [Reminder]()
     private var reminderStructsList = [ReminderStruct]()
+    private var realmReminderObjList = [RealmReminderObj]()
     private let realm = try! Realm()
+    public var reminderCompletionHandler: (() -> Void)?
     
     // Load main View Controller
     override func viewDidLoad() {
@@ -47,6 +57,12 @@ class RemindersListVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         // Ask user for permission
         UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .alert, .sound], completionHandler: {success, error in})
+        
+        // Load data from realm
+        realmReminderObjList = realm.objects(RealmReminderObj.self).map({$0})
+        for realmReminderObj in realmReminderObjList {
+            reminderStructsList.append(realmReminderObj.structure!)
+        }
         
         table.delegate = self
         table.dataSource = self
@@ -72,15 +88,14 @@ class RemindersListVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 let reminderStruct = ReminderStruct(title: title, body: body, date: date, identifier: "id_\(title)")
                 self.reminderStructsList.append(reminderStruct)
                 
-                // Create Reminder Object
-                let reminder = Reminder()
-                reminder.reminderTitle = title
-                reminder.reminderBody = body
-                reminder.reminderDate = date
-                reminder.reminderID = "id_\(title)"
-                self.remindersList.append(reminder)
-
-                // Refresh Realm & Table
+                let realmObj = RealmReminderObj()
+                realmObj.structure = reminderStruct
+                self.realmReminderObjList.append(realmObj)
+                
+                // Write To Realm & Refresh
+                self.realm.beginWrite()
+                self.realm.add(realmObj)
+                try! self.realm.commitWrite()
                 self.refresh()
                 
                 // Create Notification
@@ -105,9 +120,8 @@ class RemindersListVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    // Refresh
     func refresh() {
-        remindersList = realm.objects(Reminder.self).map({$0})
+        realmReminderObjList = realm.objects(RealmReminderObj.self).map({$0})
         self.table.reloadData()
     }
     
@@ -127,32 +141,33 @@ class RemindersListVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     // Grab Cell
-    func tableView(_ tableView: UITableView, didSelectRowAt index: IndexPath) {
-        tableView.deselectRow(at: index, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
         // Adding to VC Instance
         guard let vc = storyboard?.instantiateViewController(identifier: "reminderInfoVC") as? ReminderInfoVC else {
             return
         }
         
-        // Switch View
+        // Set Variables
+        let realmObj = realmReminderObjList[indexPath.row]
+        
         vc.title = "Reminder Information"
         vc.navigationItem.largeTitleDisplayMode = .never
-        vc.completeionHandler = {title, body, date in
-            DispatchQueue.main.async{
-                self.navigationController?.popToRootViewController(animated: true)
-            }
+        vc.realmReminderObj = realmObj
+        vc.realm = self.realm
+
+        vc.reminderInfoCompletionHandler = { RealmReminderObj in
+            self.refresh()
         }
         
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    // Size
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return reminderStructsList.count
+        return realmReminderObjList.count
     }
     
-    // Count
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
